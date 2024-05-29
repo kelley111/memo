@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:background="@drawable/h2"
+    android:layout_height="match_parent"
+    tools:context=".SentenceCollectionActivity">
+
+    <ListView
+        android:divider="@null"
+        android:dividerHeight="5dp"
+        android:id="@+id/sentence_collection_read_listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </ListView>
+    <TextView
+        android:visibility="invisible"
+        android:id="@+id/sentence_tip"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:text="收藏你喜欢的句子吧！！！"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </TextView>
+
+</LinearLayout>

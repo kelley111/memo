@@ -37,6 +37,7 @@ public class DiaryFragment extends Fragment implements AdapterView.OnItemClickLi
 
         super.onCreate(savedInstanceState);
 
+
     }
 
     @Override

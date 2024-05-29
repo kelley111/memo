@@ -21,7 +21,7 @@ public class DiaryWriteActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_diary_write);
+        setContentView(R.layout.activity_write);
 
         editText = findViewById(R.id.content2);
 

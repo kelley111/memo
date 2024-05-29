@@ -14,11 +14,12 @@
 
         <ImageButton
             android:id="@+id/imageButton"
-            android:onClick="cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="324dp"
             android:layout_marginTop="4dp"
             android:contentDescription="1"
+            android:onClick="cancel"
             android:src="@android:drawable/ic_input_delete"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -26,14 +27,14 @@
 
         <ImageButton
             android:id="@+id/imageButton2"
-            android:onClick="create"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="2"
+            android:onClick="create"
             android:src="@android:drawable/ic_menu_save"
             tools:ignore="MissingConstraints"
-            tools:layout_editor_absoluteX="352dp"
-            tools:layout_editor_absoluteY="4dp" />
+            tools:layout_editor_absoluteX="383dp"
+            tools:layout_editor_absoluteY="5dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

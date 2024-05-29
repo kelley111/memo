@@ -37,7 +37,7 @@ public class DiaryCreateActivity extends AppCompatActivity {
         if(text.isEmpty()){
             //用弹窗表示当前内容为空不能保存
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("提示").setMessage("请输入内容后再保存o(*￣▽￣*)ブ").setNegativeButton("好的",null);
+            builder.setTitle("tips").setMessage("请输入内容后再进行保存，无法保存空内容").setNegativeButton("ok",null);
             builder.create().show();
         }
         else {
@@ -60,18 +60,13 @@ public class DiaryCreateActivity extends AppCompatActivity {
             int minute = calendar.get(Calendar.MINUTE);//分钟
             int second = calendar.get(Calendar.SECOND);//秒
             String date = year + "/" + month + "/" + day + "/" + hour + "/" + minute + "/" + second + "/" + weekdayC;//组合成完整时间日期
-//        Toast.makeText(this, date, Toast.LENGTH_SHORT).show();
-
-            //向数据库中写入编辑框中获得的日记数据和时间
-            SharedPreferences sp = getSharedPreferences("userinformation", MODE_PRIVATE);
-            String user_id = sp.getString("user_id", null);//获得sharedpreferences中保存的用户账号作为查询依据
+             Toast.makeText(this, date, Toast.LENGTH_SHORT).show();
 
             //向数据库写入数据
             ContentValues values = new ContentValues();
-            values.put("user_id", user_id);
             values.put("diarydata", text);
             values.put("date", date);
-            values.put("treehole_status","未投递");
+            values.put("favorite_status","未收藏");
             db.insert("diary_data", null, values);
 
             Intent intent = new Intent(this, MainActivity.class);

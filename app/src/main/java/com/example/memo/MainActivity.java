@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         setContentView(R.layout.activity_main);
         DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.page1);
         //设置屏幕滑动问题
+        applyUserSettings();
         setDrawerLeftEdgeSize(this,drawerLayout,1);
         ViewPager2 view = findViewById(R.id.viewPage2);
         MyPageAdapter pageAdapter = new MyPageAdapter(this);
@@ -49,11 +50,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         int[] images = new int[]{
 
-                R.drawable.p1,
+                android.R.drawable.presence_audio_away,
 
-                R.drawable.p2,
+                android.R.drawable.ic_menu_compass,
 
-                R.drawable.p3};
+                android.R.drawable.ic_menu_myplaces
+        };
 
         String[] tiles = new String[]{"日记", "箴言", "say anything"};
         @SuppressLint({"MissingInflatedId", "LocalSuppress"}) TabLayout tabLayout = findViewById(R.id.topline);
@@ -82,6 +84,45 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             drawerLayout.openDrawer(Gravity.LEFT);
         }
     }
+
+    private void applyUserSettings() {
+        SharedPreferences sp = getSharedPreferences("user_settings", MODE_PRIVATE);
+        String background = sp.getString("background", "默认背景");
+        String style = sp.getString("style", "默认样式");
+
+        View rootView = findViewById(android.R.id.content);
+        switch (background) {
+            case "背景1":
+                rootView.setBackgroundResource(R.drawable.h1);
+                break;
+            case "背景2":
+                rootView.setBackgroundResource(R.drawable.h2);
+                break;
+            case "背景3":
+                rootView.setBackgroundResource(R.drawable.h3);
+                break;
+            default:
+                rootView.setBackgroundResource(R.color.white);
+                break;
+        }
+
+        // 应用样式设置的逻辑
+        switch (style) {
+            case "样式1":
+                // 设置样式1
+                break;
+            case "样式2":
+                // 设置样式2
+                break;
+            case "样式3":
+                // 设置样式3
+                break;
+            default:
+                // 默认样式
+                break;
+        }
+    }
+
 
     // 该方法解决DrawerLayout只能从屏幕边缘滑动的问题,来自csdn
     private void setDrawerLeftEdgeSize (Activity activity, DrawerLayout drawerLayout, float displayWidthPercentage) {

@@ -115,7 +115,7 @@
             android:layout_width="24dp"
             android:layout_height="23dp"
             android:layout_marginLeft="30dp"
-            android:background="@drawable/p1"
+            android:background="@drawable/h1"
             android:backgroundTint="@color/white"
             android:onClick="delete" />
 

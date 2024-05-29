@@ -7,7 +7,7 @@ import android.util.Log;
 
 public class DBHelper extends SQLiteOpenHelper {
 
-    private static final int VERSION = 1;
+    private static final int VERSION = 2;  // Increment the version number
     private static final String DB_NAME = "my.db";
     public static final String TB1_NAME = "diary_data";
     public static final String TB2_NAME = "sentence_data";
@@ -30,8 +30,8 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE " + TB1_NAME + " ("
                 + "diarydata TEXT, "
                 + "date DATE, "
-                + "favorite_status TEXT, " // 修改为收藏状态
-                + "favorite_time TEXT" // 修改为收藏时间
+                + "favorite_status TEXT, " // 收藏状态
+                + "favorite_time TEXT" // 收藏时间
                 + ")");
 
         db.execSQL("CREATE TABLE " + TB2_NAME + " ("
@@ -39,7 +39,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 + "source TEXT, "
                 + "review_text TEXT, "
                 + "date DATE, "
-                + "favorite_status TEXT" // 修改为收藏状态
+                + "favorite_status TEXT" // 收藏状态
                 + ")");
 
         db.execSQL("CREATE TABLE " + TB3_NAME + " ("
@@ -52,6 +52,11 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // 数据库升级逻辑
+        Log.i("TAG", "onUpgrade: from " + oldVersion + " to " + newVersion);
+        if (oldVersion < 2) {
+            db.execSQL("ALTER TABLE " + TB1_NAME + " ADD COLUMN favorite_status TEXT");
+            db.execSQL("ALTER TABLE " + TB1_NAME + " ADD COLUMN favorite_time TEXT");
+            db.execSQL("ALTER TABLE " + TB2_NAME + " ADD COLUMN favorite_status TEXT");
+        }
     }
 }

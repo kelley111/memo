@@ -21,6 +21,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".DiaryCreateActivity">
+            <!-- 可能还有其他intent-filter等配置 -->
+        </activity>
     </application>
 
 </manifest>

@@ -47,7 +47,7 @@ public class DiaryFragment extends Fragment implements AdapterView.OnItemClickLi
         contentview = inflater.inflate(R.layout.diaryfragment, container, false);
 
         //从数据库中获取日记数据和日记记录的时间和日期
-        Cursor cursor = db.query("diary_data", new String[]{"diarydata", "date", "treehole_status"},
+        Cursor cursor = db.query("diary_data", new String[]{"diarydata", "date", "favorite_status"},
                 null, null, null, null, null); // 删除了 user_id 条件//查询data表中当前用户的日记和日期
 
         //解决第一次使用时数据为空的情况
@@ -62,7 +62,7 @@ public class DiaryFragment extends Fragment implements AdapterView.OnItemClickLi
 
                 @SuppressLint("Range") String diarydata = cursor.getString(cursor.getColumnIndex("diarydata"));
                 @SuppressLint("Range") String date = cursor.getString(cursor.getColumnIndex("date"));
-                @SuppressLint("Range") String status = cursor.getString(cursor.getColumnIndex("treehole_status"));
+                @SuppressLint("Range") String status = cursor.getString(cursor.getColumnIndex("favorite_status"));
 
                 String d[] = date.split("/");//分片获取日期中的各个值,数组中依次为年/月/日/时/分/秒/星期
 

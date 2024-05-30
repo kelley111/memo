@@ -14,13 +14,17 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.Point;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -38,8 +42,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         setContentView(R.layout.activity_main);
         DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.page1);
         //设置屏幕滑动问题
-        applyUserSettings();
-        setDrawerLeftEdgeSize(this,drawerLayout,1);
+        applyUserSettings(this, drawerLayout, 1f);
         ViewPager2 view = findViewById(R.id.viewPage2);
         MyPageAdapter pageAdapter = new MyPageAdapter(this);
         view.setAdapter(pageAdapter);
@@ -81,43 +84,28 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
     }
 
-    private void applyUserSettings() {
-        SharedPreferences sp = getSharedPreferences("user_settings", MODE_PRIVATE);
-        String background = sp.getString("background", "默认背景");
-        String style = sp.getString("style", "默认样式");
 
-        View rootView = findViewById(android.R.id.content);
-        switch (background) {
-            case "背景1":
-                rootView.setBackgroundResource(R.drawable.h1);
-                break;
-            case "背景2":
-                rootView.setBackgroundResource(R.drawable.h2);
-                break;
-            case "背景3":
-                rootView.setBackgroundResource(R.drawable.h3);
-                break;
-            default:
-                rootView.setBackgroundResource(R.color.white);
-                break;
-        }
 
-        // 应用样式设置的逻辑
-        switch (style) {
-            case "样式1":
-                // 设置样式1
-                break;
-            case "样式2":
-                // 设置样式2
-                break;
-            case "样式3":
-                // 设置样式3
-                break;
-            default:
-                // 默认样式
-                break;
+
+    private void applyUserSettings(Activity activity,DrawerLayout drawerLayout,float displayWidthPercentage) {
+        if (activity == null || drawerLayout == null)
+            return;
+
+        try {
+            Field leftDraggerField = drawerLayout.getClass().getDeclaredField("mLeftDragger");
+            leftDraggerField.setAccessible(true);
+            ViewDragHelper leftDragger = (ViewDragHelper) leftDraggerField.get(drawerLayout);
+
+            Field edgeSizeField = leftDragger.getClass().getDeclaredField("mEdgeSize");
+            edgeSizeField.setAccessible(true);
+            int edgeSize = (int) (displayWidthPercentage * Resources.getSystem().getDisplayMetrics().widthPixels);
+            edgeSizeField.setInt(leftDragger, edgeSize);
+        } catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException e) {
+            e.printStackTrace();
         }
     }
+
+
 
 
     // 该方法解决DrawerLayout只能从屏幕边缘滑动的问题,来自csdn
@@ -165,7 +153,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         Intent intent = new Intent(this,DiaryCreateActivity.class);
         startActivity(intent);
     }
-
+   public  void sentencecollection(View btn){
+        Intent intent = new Intent(this,SentenceCollectionActivity.class);
+        startActivity(intent);
+   }
 
 
     @Override

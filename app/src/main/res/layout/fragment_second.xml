@@ -32,44 +32,44 @@
                 android:layout_marginBottom="72dp">
 
                 <RadioButton
-                    android:id="@+id/dm"
+                    android:id="@+id/cartoon"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:minHeight="48dp"
-                    android:text="动漫" />
+                    android:text="动画" />
 
                 <RadioButton
-                    android:id="@+id/game"
+                    android:id="@+id/self"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:minHeight="48dp"
-                    android:text="游戏" />
+                    android:text="原创" />
 
                 <RadioButton
-                    android:id="@+id/wx"
+                    android:id="@+id/literature"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:minHeight="48dp"
                     android:text="文学" />
 
                 <RadioButton
-                    android:id="@+id/pm"
+                    android:id="@+id/poetry"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:checked="true"
                     android:minHeight="48dp"
                     android:text="诗词" />
-                <!--checked为true默认将动漫选中-->
+                <!--checked为true默认将动画选中-->
 
                 <RadioButton
-                    android:id="@+id/zx"
+                    android:id="@+id/philosophy"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:minHeight="48dp"
                     android:text="哲学" />
 
                 <RadioButton
-                    android:id="@+id/ys"
+                    android:id="@+id/films"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:minHeight="48dp"
@@ -83,7 +83,7 @@
                     android:text="网易云" />
 
                 <RadioButton
-                    android:id="@+id/hh"
+                    android:id="@+id/random"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:minHeight="48dp"

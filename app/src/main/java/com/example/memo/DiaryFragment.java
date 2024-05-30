@@ -49,7 +49,7 @@ public class DiaryFragment extends Fragment implements AdapterView.OnItemClickLi
 
         //从数据库中获取日记数据和日记记录的时间和日期
         Cursor cursor = db.query("diary_data", new String[]{"diarydata", "date", "favorite_status"},
-                null, null, null, null, null); // 删除了 user_id 条件//查询data表中当前用户的日记和日期
+                null, null, null, null, null); //查询data表中当前用户的日记和日期
 
         //解决第一次使用时数据为空的情况
         if(cursor.getCount() == 0){
@@ -138,46 +138,50 @@ public class DiaryFragment extends Fragment implements AdapterView.OnItemClickLi
 
     //长按删除功能
     @Override
+
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
         Log.i(TAG, "onItemLongClick: 长按列表项position=" + position);
         ListView listView = getActivity().findViewById(R.id.mylistview);
         HashMap<String,String> map = (HashMap<String, String>) listView.getItemAtPosition(position);
-        String date = map.get("date1");//获得map中的日期数据，以便删除时将数据库记录一并删除
+        final String date = map.get("date1");
 
         db = dbHelper.getWritableDatabase();
-        Cursor cursor = db.query("diary_data",new String[]{"treehole_status"},"user_id=? and date=?",new String[]{date},
-                null,null,null);
-        while (cursor.moveToNext()){
-            if(cursor.getString(cursor.getColumnIndexOrThrow("treehole_status")).equals("已投递")){
+        Cursor cursor = db.query("diary_data", new String[]{"treehole_status"}, "user_id=? and date=?", new String[]{date},
+                null, null, null);
+        while (cursor.moveToNext()) {
+            if (cursor.getString(cursor.getColumnIndexOrThrow("treehole_status")).equals("已投递")) {
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setTitle("提示").setMessage("该随记已投递到树洞，请到我的投递中撤销").setPositiveButton("确定",null);
+                builder.setTitle("提示").setMessage("该随记已投递到树洞，请到我的投递中撤销").setPositiveButton("确定", null);
                 builder.create().show();
-            }
-            else {
+            } else {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setTitle("提示").setMessage("请确认是否删除当前数据").setPositiveButton("是",new DialogInterface.OnClickListener(){
+                builder.setTitle("提示").setMessage("请确认是否删除当前数据").setPositiveButton("是", new DialogInterface.OnClickListener() {
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
                         Log.i(TAG, "onClick: 对话框事件处理");
 
-                        db.delete("diary_data","user_id=? and date=?",new String[]{date});//数据库记录删除
+                        // 删除数据库记录
+                        db.delete("diary_data", "user_id=? and date=?", new String[]{date});
+                        // 从列表中移除该项
                         listItems.remove(position);
-                        DiaryListviewAdapter adapter = new DiaryListviewAdapter(getActivity(),R.layout.list_item1,listItems);//删除后修改list值
+                        // 更新适配器
+                        DiaryListviewAdapter adapter = new DiaryListviewAdapter(getActivity(), R.layout.list_item1, listItems);
                         listView.setAdapter(adapter);
 
                         Toast.makeText(getActivity(), "删除成功", Toast.LENGTH_SHORT).show();
                     }
-                }).setNegativeButton("否",null);
+                }).setNegativeButton("否", null);
                 builder.create().show();
                 Log.i(TAG, "onItemLongClick: size=" + listItems.size());
             }
         }
 
-        return true;//长按时不会产生单击
+        return true; // 长按时不会产生单击
     }
+
 
 }
 

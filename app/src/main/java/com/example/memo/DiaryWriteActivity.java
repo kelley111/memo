@@ -38,15 +38,14 @@ public class DiaryWriteActivity extends AppCompatActivity {
 
         text = editText.getText().toString();//获得当前编辑框中数据
 
-        SharedPreferences sp = getSharedPreferences("userinformation",MODE_PRIVATE);
+
         SharedPreferences sp1 = getSharedPreferences("data",MODE_PRIVATE);
-        String user_id = sp.getString("user_id",null);//获得sharedpreferences中保存的用户账号作为查询依据
         String date = sp1.getString("date",null);//获得之前保存的日期数据以便准确修改日记数据
 
         //向数据库更新日记数据，不对日期做更改
         ContentValues values = new ContentValues();
         values.put("diarydata",text);
-        db.update("diary_data",values,"user_id=? and date=?",new String[]{user_id,date});
+        db.update("diary_data",values,"user_id=? and date=?",null);
         Toast.makeText(this, "修改成功", Toast.LENGTH_SHORT).show();
 
         Intent intent = new Intent(this,MainActivity.class);

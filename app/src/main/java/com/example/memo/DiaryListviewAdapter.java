@@ -29,18 +29,18 @@ public class DiaryListviewAdapter extends ArrayAdapter {
 
         Map<String,String> map = (Map<String, String>) getItem(position);
         TextView date = itemView.findViewById(R.id.date);
-        TextView day = itemView.findViewById(R.id.day);
+      //  TextView day = itemView.findViewById(R.id.day);
         TextView time = itemView.findViewById(R.id.time);
-        TextView ddate = itemView.findViewById(R.id.ddate);
+        //TextView ddate = itemView.findViewById(R.id.ddate);
         TextView text = itemView.findViewById(R.id.text);
-        TextView status = itemView.findViewById(R.id.status);
+      //  TextView status = itemView.findViewById(R.id.status);
 
         date.setText(map.get("date"));
-        day.setText(map.get("day"));
+     //   day.setText(map.get("day"));
         time.setText(map.get("time"));
-        ddate.setText(map.get("ddate"));
+       // ddate.setText(map.get("ddate"));
         text.setText(map.get("text"));
-        status.setText(map.get("status"));
+      //  status.setText(map.get("status"));
 
         return itemView;
     }

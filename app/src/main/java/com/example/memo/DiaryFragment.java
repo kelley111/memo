@@ -34,10 +34,7 @@ public class DiaryFragment extends Fragment implements AdapterView.OnItemClickLi
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-
-
     }
 
     @Override
@@ -56,49 +53,40 @@ public class DiaryFragment extends Fragment implements AdapterView.OnItemClickLi
             TextView suiji = contentview.findViewById(R.id.suiji);
             suiji.setVisibility(View.VISIBLE);
             return contentview;
-        }
-        else {
+        } else {
             cursor.moveToLast();//实现逆序输出，将后写入的日记先展示出来
             do {
-
                 @SuppressLint("Range") String diarydata = cursor.getString(cursor.getColumnIndex("diarydata"));
                 @SuppressLint("Range") String date = cursor.getString(cursor.getColumnIndex("date"));
                 @SuppressLint("Range") String status = cursor.getString(cursor.getColumnIndex("favorite_status"));
 
                 String d[] = date.split("/");//分片获取日期中的各个值,数组中依次为年/月/日/时/分/秒/星期
 
-//更清晰的展示数据,使展示的数据效果更好
-                for(int i = 0;i<d.length-1;i++){
-
-                    if(d[i].length()==1){
-
-                        d[i]="0"+d[i];
-
+                //更清晰的展示数据,使展示的数据效果更好
+                for(int i = 0; i < d.length - 1; i++){
+                    if(d[i].length() == 1){
+                        d[i] = "0" + d[i];
                     }
                 }
 
-                String time = d[3]+":"+d[4];
-                String riqi = d[0]+"-"+d[1]+"-"+d[2];
-                String weekday = "星期"+d[6];
+                String time = d[3] + ":" + d[4];
+                String riqi = d[0] + "-" + d[1] + "-" + d[2];
+                String weekday = "星期" + d[6];
 
                 HashMap<String,String> map = new HashMap<String,String>();
-                map.put("daynum",d[2]);
-                map.put("weekday",weekday);
-                map.put("time",time);
-                map.put("date",riqi);
-                map.put("text",diarydata);
-                map.put("status",status);
-                map.put("date1",date);//将未调整的完整日期同时存储下来，便于为以后页面查询提供日期参考
+                map.put("daynum", d[2]);
+                map.put("weekday", weekday);
+                map.put("time", time);
+                map.put("date", riqi);
+                map.put("text", diarydata);
+                map.put("status", status);
+                map.put("date1", date);//将未调整的完整日期同时存储下来，便于为以后页面查询提供日期参考
                 listItems.add(map);
 
-            }
-            while(cursor.moveToPrevious());
+            } while(cursor.moveToPrevious());
 
             //生成适配器的Item和动态数组对应的元素
-//        SimpleAdapter listItemAdapter = new SimpleAdapter(getActivity(),listItems,R.layout.list_item1,new String[]{"daynum","weekday","time","date","text"},new int[]{R.id.daynum,
-//                R.id.weekday,R.id.time,R.id.date,R.id.textd});//普通添加值的方式
-
-            DiaryListviewAdapter adapter = new DiaryListviewAdapter(getActivity(),R.layout.list_item1,listItems);//自定义adapter添加值
+            DiaryListviewAdapter adapter = new DiaryListviewAdapter(getActivity(), R.layout.list_item1, listItems);//自定义adapter添加值
 
             //绑定控件
             ListView listView = contentview.findViewById(R.id.mylistview);
@@ -106,15 +94,13 @@ public class DiaryFragment extends Fragment implements AdapterView.OnItemClickLi
             listView.setOnItemClickListener(this);//为listView添加点击响应
             listView.setOnItemLongClickListener(this);//为listview长按添加响应
 
-            return  contentview;//将实现的页面返回
+            return contentview;//将实现的页面返回
         }
-
     }
 
     //点击listitem后跳转到日记阅读页面
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
         ListView listView = contentview.findViewById(R.id.mylistview);
         HashMap<String,String> map = (HashMap<String, String>) listView.getItemAtPosition(position);//获得当前list展示的数据，储存在map中，通过key取值
 
@@ -125,20 +111,18 @@ public class DiaryFragment extends Fragment implements AdapterView.OnItemClickLi
         String diarydata = map.get("text");//获取日记数据准备传递到下一个页面
 
         Itemclick.putExtra("diarydata", diarydata);//将日记数据传至下一个页面
-        Itemclick.putExtra("date",date);//将日期传至下一个页面
-
+        Itemclick.putExtra("date", date);//将日期传至下一个页面
 
         //将完整未修改日期存储到sharedpreference中,便于后面页面查询值直接调用
-        SharedPreferences sp = getActivity().getSharedPreferences("data",Context.MODE_PRIVATE);
+        SharedPreferences sp = getActivity().getSharedPreferences("data", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
-        editor.putString("date",date);
+        editor.putString("date", date);
         editor.apply();//必须有这句，否则不执行
         startActivity(Itemclick);
     }
 
     //长按删除功能
     @Override
-
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
         Log.i(TAG, "onItemLongClick: 长按列表项position=" + position);
         ListView listView = getActivity().findViewById(R.id.mylistview);
@@ -146,42 +130,25 @@ public class DiaryFragment extends Fragment implements AdapterView.OnItemClickLi
         final String date = map.get("date1");
 
         db = dbHelper.getWritableDatabase();
-        Cursor cursor = db.query("diary_data", new String[]{"treehole_status"}, "user_id=? and date=?", new String[]{date},
-                null, null, null);
-        while (cursor.moveToNext()) {
-            if (cursor.getString(cursor.getColumnIndexOrThrow("treehole_status")).equals("已投递")) {
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setTitle("提示").setMessage("该随记已投递到树洞，请到我的投递中撤销").setPositiveButton("确定", null);
-                builder.create().show();
-            } else {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setTitle("提示").setMessage("请确认是否删除当前数据").setPositiveButton("是", new DialogInterface.OnClickListener() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("提示").setMessage("请确认是否删除当前数据").setPositiveButton("是", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Log.i(TAG, "onClick: 对话框事件处理");
 
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                // 删除数据库记录
+                db.delete("diary_data", "date=?", new String[]{date});
+                // 从列表中移除该项
+                listItems.remove(position);
+                // 更新适配器
+                ((DiaryListviewAdapter) listView.getAdapter()).notifyDataSetChanged();
 
-                        Log.i(TAG, "onClick: 对话框事件处理");
-
-                        // 删除数据库记录
-                        db.delete("diary_data", "user_id=? and date=?", new String[]{date});
-                        // 从列表中移除该项
-                        listItems.remove(position);
-                        // 更新适配器
-                        DiaryListviewAdapter adapter = new DiaryListviewAdapter(getActivity(), R.layout.list_item1, listItems);
-                        listView.setAdapter(adapter);
-
-                        Toast.makeText(getActivity(), "删除成功", Toast.LENGTH_SHORT).show();
-                    }
-                }).setNegativeButton("否", null);
-                builder.create().show();
-                Log.i(TAG, "onItemLongClick: size=" + listItems.size());
+                Toast.makeText(getActivity(), "删除成功", Toast.LENGTH_SHORT).show();
             }
-        }
+        }).setNegativeButton("否", null);
+        builder.create().show();
 
         return true; // 长按时不会产生单击
     }
-
-
 }
-

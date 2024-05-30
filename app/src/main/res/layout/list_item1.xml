@@ -17,25 +17,16 @@
 
             <TextView
                 android:id="@+id/date"
-                android:layout_width="match_parent"
+                android:layout_width="150dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:gravity="center"
+                android:gravity="left"
                 android:textColor="@android:color/holo_blue_bright"
                 android:textStyle="bold"
-                android:textSize="25dp"
+                android:textSize="16dp"
+                android:layout_gravity="left"
                 android:text="date" />
 
-            <TextView
-                android:id="@+id/day"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:gravity="center"
-                android:textColor="@color/design_default_color_primary"
-                android:textStyle="bold"
-                android:textSize="25dp"
-                android:text="day" />
         </LinearLayout>
 
         <LinearLayout
@@ -58,22 +49,10 @@
                 android:layout_weight="1"
                 android:text="TextView" />
 
-            <TextView
-                android:id="@+id/ddate"
-                android:layout_weight="1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="TextView" />
+
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/status"
-            android:layout_width="wrap_content"
-            android:layout_height="120dp"
-            android:gravity="center"
-            android:layout_weight="0"
-            android:textStyle="italic"
-            android:text="已发送" />
+
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>

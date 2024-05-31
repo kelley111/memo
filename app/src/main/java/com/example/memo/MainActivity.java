@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 android.R.drawable.ic_menu_myplaces
         };
 
-        String[] tiles = new String[]{"日记", "箴言", "say anything"};
+        String[] tiles = new String[]{"日记", "箴言", "代办日程"};
         @SuppressLint({"MissingInflatedId", "LocalSuppress"}) TabLayout tabLayout = findViewById(R.id.topline);
         new TabLayoutMediator(tabLayout, view,
                 (tab,position) -> tab.setIcon(images[position]).setText(tiles[position])

@@ -7,11 +7,11 @@ import android.util.Log;
 
 public class DBHelper extends SQLiteOpenHelper {
 
-    private static final int VERSION = 2;  // Increment the version number
+    private static final int VERSION =3 ;  // Increment the version number
     private static final String DB_NAME = "my.db";
     public static final String TB1_NAME = "diary_data";
     public static final String TB2_NAME = "sentence_data";
-    public static final String TB3_NAME = "favorite_status";
+    public static final String TB3_NAME = "todo_items";
 
     public DBHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
@@ -42,12 +42,13 @@ public class DBHelper extends SQLiteOpenHelper {
                 + "favorite_status TEXT" // 收藏状态
                 + ")");
 
-        db.execSQL("CREATE TABLE " + TB3_NAME + " ("
-                + "treehole_diarydata TEXT, "
-                + "treehole_date DATE, "
-                + "store_date DATE, "
-                + "author_id TEXT"
+        db.execSQL("CREATE TABLE " + TB3_NAME + " (" // Create the new to-do items table
+                + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + "task TEXT, "
+                + "completion_time INTEGER, "
+                + "deadline INTEGER"
                 + ")");
+
     }
 
     @Override
@@ -57,6 +58,14 @@ public class DBHelper extends SQLiteOpenHelper {
             db.execSQL("ALTER TABLE " + TB1_NAME + " ADD COLUMN favorite_status TEXT");
             db.execSQL("ALTER TABLE " + TB1_NAME + " ADD COLUMN favorite_time TEXT");
             db.execSQL("ALTER TABLE " + TB2_NAME + " ADD COLUMN favorite_status TEXT");
+        }
+        if (oldVersion < 3) {
+            db.execSQL("CREATE TABLE " + TB3_NAME + " (" // Create the new to-do items table
+                    + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                    + "task TEXT, "
+                    + "completion_time INTEGER, "
+                    + "deadline INTEGER"
+                    + ")");
         }
     }
 }

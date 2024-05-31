@@ -1,8 +1,6 @@
 package com.example.memo;
 
 import android.content.ContentValues;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -38,7 +36,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class SecondFragment extends Fragment implements Runnable {
+public class Sentencefragment extends Fragment implements Runnable {
 
     private static final String TAG = "fragment2";
     View contentview;
@@ -194,7 +192,7 @@ public class SecondFragment extends Fragment implements Runnable {
             } else if (checkedId == R.id.random) {
                 web = "https://v1.hitokoto.cn?c=a&c=b&c=c&c=d&c=e&c=f&c=g&c=h&c=i&c=j&c=k&c=l";
             }
-            Thread t = new Thread(SecondFragment.this::run);
+            Thread t = new Thread(Sentencefragment.this::run);
             t.start();
         });
 

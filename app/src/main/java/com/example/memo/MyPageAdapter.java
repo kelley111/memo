@@ -17,9 +17,9 @@ public class MyPageAdapter extends FragmentStateAdapter {
         if(position==0){
             return new DiaryFragment();
         }else if(position==1){
-            return new SecondFragment();
+            return new Sentencefragment();
         }else{
-            return new ThirdFragment();
+            return new Todolistfragment();
         }
     }
 

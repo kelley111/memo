@@ -27,37 +27,6 @@
 
         </ListView>
 
-        <Button
-            android:layout_width="90dp"
-            android:layout_height="50dp"
-            android:background="@color/white"
-            android:clickable="true"
-            android:contentDescription="创建新小记"
-            android:drawableLeft="@drawable/p1"
-            android:onClick="create1"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.948" />
-
-        <Button
-            android:layout_width="90dp"
-            android:layout_height="50dp"
-            android:background="@color/white"
-            android:clickable="true"
-            android:contentDescription="查看收藏的随记"
-            android:drawableRight="@drawable/p2"
-            android:onClick="dairy_favorite_collection"
-            android:textSize="15sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.064"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.947" />
-
         <TextView
             android:id="@+id/suiji"
             android:layout_width="match_parent"

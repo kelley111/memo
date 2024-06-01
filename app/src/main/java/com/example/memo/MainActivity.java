@@ -153,9 +153,18 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         Intent intent = new Intent(this,DiaryCreateActivity.class);
         startActivity(intent);
     }
-   public  void sentencecollection(View btn){
+    public  void sentencecollection(View btn){
         Intent intent = new Intent(this,SentenceCollectionActivity.class);
         startActivity(intent);
+    }
+   public  void dairy_favorite_collection(View view){
+        Intent intent = new Intent(this,dairy_favorite_collection.class);
+        startActivity(intent);
+   }
+   public  void  create2(View btn){
+       Intent intent = new Intent(this,TodoList.class);
+       startActivity(intent);
+
    }
 
 

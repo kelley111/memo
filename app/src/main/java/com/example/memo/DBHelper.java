@@ -7,15 +7,12 @@ import android.util.Log;
 
 public class DBHelper extends SQLiteOpenHelper {
 
-    private static final int VERSION =3 ;  // Increment the version number
+    private static final int VERSION =4 ;
     private static final String DB_NAME = "my.db";
     public static final String TB1_NAME = "diary_data";
     public static final String TB2_NAME = "sentence_data";
-    public static final String TB3_NAME = "todo_items";
-
-    public DBHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
-        super(context, name, factory, version);
-    }
+    public static final String TB3_NAME = "todo_list";
+    public static final String TB4_NAME = "diary_favorite_data";
 
     public DBHelper(Context context) {
         super(context, DB_NAME, null, VERSION);
@@ -23,15 +20,15 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        Log.i("TAG", "onCreate: ");
+        Log.i("DBHelper", "onCreate: Creating database tables");
 
         db.execSQL("PRAGMA foreign_keys=ON;");
 
         db.execSQL("CREATE TABLE " + TB1_NAME + " ("
                 + "diarydata TEXT, "
                 + "date DATE, "
-                + "favorite_status TEXT, " // 收藏状态
-                + "favorite_time TEXT" // 收藏时间
+                + "favorite_status TEXT, "
+                + "favorite_time TEXT"
                 + ")");
 
         db.execSQL("CREATE TABLE " + TB2_NAME + " ("
@@ -39,32 +36,50 @@ public class DBHelper extends SQLiteOpenHelper {
                 + "source TEXT, "
                 + "review_text TEXT, "
                 + "date DATE, "
-                + "favorite_status TEXT" // 收藏状态
+                + "favorite_status TEXT"
                 + ")");
 
-        db.execSQL("CREATE TABLE " + TB3_NAME + " (" // Create the new to-do items table
+        db.execSQL("CREATE TABLE " + TB3_NAME + " ("
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + "task TEXT, "
-                + "completion_time INTEGER, "
-                + "deadline INTEGER"
+                + "content TEXT, "
+                + "ddl TEXT, "
+                + "creation_date TEXT"
                 + ")");
 
+        db.execSQL("CREATE TABLE " + TB4_NAME + " ("
+                + "diarydata TEXT, "
+                + "date DATE, "
+                + "favorite_status TEXT, "
+                + "favorite_time TEXT"
+                + ")");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        Log.i("TAG", "onUpgrade: from " + oldVersion + " to " + newVersion);
+        Log.i("DBHelper", "onUpgrade: Upgrading database from version " + oldVersion + " to " + newVersion);
+
         if (oldVersion < 2) {
+            Log.i("DBHelper", "onUpgrade: Adding columns to diary_data and sentence_data tables");
             db.execSQL("ALTER TABLE " + TB1_NAME + " ADD COLUMN favorite_status TEXT");
             db.execSQL("ALTER TABLE " + TB1_NAME + " ADD COLUMN favorite_time TEXT");
             db.execSQL("ALTER TABLE " + TB2_NAME + " ADD COLUMN favorite_status TEXT");
         }
         if (oldVersion < 3) {
-            db.execSQL("CREATE TABLE " + TB3_NAME + " (" // Create the new to-do items table
+            Log.i("DBHelper", "onUpgrade: Creating todo_list table");
+            db.execSQL("CREATE TABLE " + TB3_NAME + " ("
                     + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
-                    + "task TEXT, "
-                    + "completion_time INTEGER, "
-                    + "deadline INTEGER"
+                    + "content TEXT, "
+                    + "ddl TEXT, "
+                    + "creation_date TEXT"
+                    + ")");
+        }
+        if (oldVersion < 4) {
+            Log.i("DBHelper", "onUpgrade: Creating diary_favorite_data table");
+            db.execSQL("CREATE TABLE " + TB4_NAME + " ("
+                    + "diarydata TEXT, "
+                    + "date DATE, "
+                    + "favorite_status TEXT, "
+                    + "favorite_time TEXT"
                     + ")");
         }
     }

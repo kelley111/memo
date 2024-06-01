@@ -18,14 +18,14 @@
             <TextView
                 android:id="@+id/date"
                 android:layout_width="150dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:gravity="left"
-                android:textColor="@android:color/holo_blue_bright"
-                android:textStyle="bold"
-                android:textSize="16dp"
                 android:layout_gravity="left"
-                android:text="date" />
+                android:layout_weight="1"
+                android:gravity="left"
+                android:text="date"
+                android:textColor="@android:color/holo_blue_bright"
+                android:textSize="16dp"
+                android:textStyle="bold" />
 
         </LinearLayout>
 
@@ -51,7 +51,6 @@
 
 
         </LinearLayout>
-
 
 
     </LinearLayout>

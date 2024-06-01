@@ -29,6 +29,13 @@
         <activity android:name=".DiaryActivity"></activity>
         <activity android:name=".SentenceCollectionActivity"></activity>
         <activity android:name=".DiaryWriteActivity"></activity>
+        <activity android:name="dairy_favorite_collection"></activity>
+        <activity android:name=".TodoList"></activity>
+
+        <activity android:name=".Todoeditactivity" />
+
+
+
 
     </application>
 

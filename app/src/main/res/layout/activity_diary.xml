@@ -71,7 +71,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="584dp"
+        android:layout_height="500dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -79,16 +79,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.126">
 
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:hint="心情/主题"
-            android:padding="5dp"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-             />
 
         <TextView
             android:id="@+id/read"
@@ -111,34 +101,40 @@
         android:orientation="horizontal">
 
         <ImageButton
-            android:layout_gravity="center_vertical"
             android:layout_width="24dp"
             android:layout_height="23dp"
+            android:layout_gravity="center_vertical"
             android:layout_marginLeft="30dp"
-            android:background="@drawable/h1"
+            android:background="@android:drawable/ic_input_delete"
             android:backgroundTint="@color/white"
-            android:onClick="delete" />
+            android:contentDescription="delete"
+            android:onClick="delete"
+            tools:ignore="TouchTargetSizeCheck" />
 
         <ImageButton
-            android:onClick="share"
-            android:layout_marginLeft="135dp"
             android:layout_width="24dp"
             android:layout_height="23dp"
             android:layout_gravity="center_vertical"
-            android:background="@drawable/p2"
-            android:backgroundTint="@color/white">
+            android:layout_marginLeft="135dp"
+            android:background="@android:drawable/ic_menu_share"
+            android:backgroundTint="@color/white"
+            android:contentDescription="share"
+            android:onClick="share"
+            tools:ignore="TouchTargetSizeCheck">
 
         </ImageButton>
 
 
         <ImageButton
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="120dp"
             android:layout_width="24dp"
             android:layout_height="23dp"
-            android:background="@drawable/p3"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="120dp"
+            android:background="@android:drawable/ic_media_next"
             android:backgroundTint="@color/white"
-            android:onClick="change" />
+            android:contentDescription="change"
+            android:onClick="change"
+            tools:ignore="TouchTargetSizeCheck" />
 
 
     </LinearLayout>

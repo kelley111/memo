@@ -66,13 +66,12 @@ public class Sentencefragment extends Fragment implements Runnable {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        contentview = inflater.inflate(R.layout.fragment_second, container, false);
+        contentview = inflater.inflate(R.layout.sentencefragment, container, false);
         radioGroup = contentview.findViewById(R.id.rdg);
         textView1 = contentview.findViewById(R.id.jd);
         textView2 = contentview.findViewById(R.id.ly);
         Review_text = contentview.findViewById(R.id.review_text);
         review_button = contentview.findViewById(R.id.review_button);
-        next = contentview.findViewById(R.id.next);
         list = contentview.findViewById(R.id.list);
 
         // 添加一个监听
@@ -237,4 +236,8 @@ public class Sentencefragment extends Fragment implements Runnable {
         handler.sendMessage(msg);
         Log.i(TAG, "run: sendMessage ok");
     }
+
+    public void next(View view) {
+    }
+
 }

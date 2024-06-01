@@ -21,7 +21,6 @@ import java.util.Date;
 import java.util.Locale;
 
 public class DiaryActivity extends AppCompatActivity {
-
     String diarydata;
     String date, status;
     TextView read, year, day, time;
@@ -75,15 +74,8 @@ public class DiaryActivity extends AppCompatActivity {
     // 删除当前日记
     public void delete(View btn) {
         Intent intent = new Intent(this, MainActivity.class);
-
-        if (status.equals("已收藏")) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("提示").setMessage("该随记已收藏，请到我的收藏中撤销").setPositiveButton("确定", null);
-            builder.create().show();
-        } else {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("提示").setMessage("请确认是否删除当前数据").setPositiveButton("是", new DialogInterface.OnClickListener() {
-
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     db.delete("diary_data", "date=?", new String[]{date}); // 数据库记录删除
@@ -96,7 +88,6 @@ public class DiaryActivity extends AppCompatActivity {
             }).setNegativeButton("否", null);
             builder.create().show();
         }
-    }
 
     public void share(View btn) {
         if (status.equals("已收藏")) {

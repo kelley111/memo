@@ -7,8 +7,8 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 public class MyPageAdapter extends FragmentStateAdapter {
 
-    public MyPageAdapter(@NonNull FragmentActivity fa) {
-        super(fa);
+    public MyPageAdapter(@NonNull FragmentActivity fragment) {
+        super(fragment);
     }
 
     @NonNull

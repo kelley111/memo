@@ -33,7 +33,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class MainActivity extends AppCompatActivity  {
     DrawerLayout drawerLayout;
 
     @Override
@@ -64,24 +64,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         //一些菜单当中的事件
         //获取保存好的字段信息
-        SharedPreferences sp = getSharedPreferences("userinformation", Context.MODE_PRIVATE);
-        String nickname = sp.getString("nickname",null);
-        String motto = sp.getString("motto",null);
 
-        ArrayList<HashMap<String,String>> listItems = new ArrayList<HashMap<String,String>>();
-
-
-
-        SettingListViewAdapter adapter = new SettingListViewAdapter(this,R.layout.list_item2,listItems);//自定义adapter添加值
-        ListView listView = findViewById(R.id.mylistview2);
-        listView.setAdapter(adapter);
-        listView.setOnItemClickListener(this);//为listView添加点击响应
-
-        Intent intent = getIntent();
-        int index = intent.getIntExtra("index",0);
-        if(index == 10){
-            drawerLayout.openDrawer(Gravity.LEFT);
-        }
     }
 
 
@@ -167,17 +150,4 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
    }
 
-
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        ListView listView = findViewById(R.id.mylistview2);
-        HashMap<String,String> map = (HashMap<String, String>) listView.getItemAtPosition(position);//获得当前list展示的数据，储存在map中，通过key取值
-            Intent Itemclick = new Intent(this, DiaryActivity.class);
-            String information = map.get("information");//获得左边信息：标题
-            String message = map.get("message");//获得右边具体数据
-            Itemclick.putExtra("information", information);
-            Itemclick.putExtra("message",message);
-            startActivity(Itemclick);
-
-    }
 }

@@ -7,7 +7,7 @@ import android.util.Log;
 
 public class DBHelper extends SQLiteOpenHelper {
 
-    private static final int VERSION =4 ;
+    private static final int VERSION =6 ;
     private static final String DB_NAME = "my.db";
     public static final String TB1_NAME = "diary_data";
     public static final String TB2_NAME = "sentence_data";
@@ -64,7 +64,7 @@ public class DBHelper extends SQLiteOpenHelper {
             db.execSQL("ALTER TABLE " + TB1_NAME + " ADD COLUMN favorite_time TEXT");
             db.execSQL("ALTER TABLE " + TB2_NAME + " ADD COLUMN favorite_status TEXT");
         }
-        if (oldVersion < 3) {
+        if (oldVersion < 6) {
             Log.i("DBHelper", "onUpgrade: Creating todo_list table");
             db.execSQL("CREATE TABLE " + TB3_NAME + " ("
                     + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -73,7 +73,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     + "creation_date TEXT"
                     + ")");
         }
-        if (oldVersion < 4) {
+        if (oldVersion < 6) {
             Log.i("DBHelper", "onUpgrade: Creating diary_favorite_data table");
             db.execSQL("CREATE TABLE " + TB4_NAME + " ("
                     + "diarydata TEXT, "

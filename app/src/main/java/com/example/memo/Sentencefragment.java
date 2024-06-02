@@ -176,20 +176,35 @@ public class Sentencefragment extends Fragment implements Runnable {
         radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
             if (checkedId == R.id.cartoon) {
                 web = "https://v1.hitokoto.cn?c=a";
+
             } else if (checkedId == R.id.self) {
                 web = "https://v1.hitokoto.cn?c=e";
+                Thread t2 = new Thread(Sentencefragment.this::run);
+                t2.start();
             } else if (checkedId == R.id.literature) {
                 web = "https://v1.hitokoto.cn?c=d";
+                Thread t3 = new Thread(Sentencefragment.this::run);
+                t3.start();
             } else if (checkedId == R.id.poetry) {
                 web = "https://v1.hitokoto.cn?c=i";
+                Thread t4 = new Thread(Sentencefragment.this::run);
+                t4.start();
             } else if (checkedId == R.id.philosophy) {
                 web = "https://v1.hitokoto.cn?c=k";
+                Thread t5 = new Thread(Sentencefragment.this::run);
+                t5.start();
             } else if (checkedId == R.id.films) {
                 web = "https://v1.hitokoto.cn?c=h";
+                Thread t6 = new Thread(Sentencefragment.this::run);
+                t6.start();
             } else if (checkedId == R.id.wyy) {
                 web = "https://v1.hitokoto.cn?c=j";
+                Thread t7 = new Thread(Sentencefragment.this::run);
+                t7.start();
             } else if (checkedId == R.id.random) {
                 web = "https://v1.hitokoto.cn?c=a&c=b&c=c&c=d&c=e&c=f&c=g&c=h&c=i&c=j&c=k&c=l";
+                Thread t8 = new Thread(Sentencefragment.this::run);
+                t8.start();
             }
             Thread t = new Thread(Sentencefragment.this::run);
             t.start();
@@ -237,7 +252,6 @@ public class Sentencefragment extends Fragment implements Runnable {
         Log.i(TAG, "run: sendMessage ok");
     }
 
-    public void next(View view) {
-    }
+
 
 }

@@ -49,9 +49,9 @@ public class ToDoListAdapter extends BaseAdapter {
         TextView completionTimeView = convertView.findViewById(R.id.completion_time_text_view);
         TextView deadlineView = convertView.findViewById(R.id.deadline_text_view);
 
-        taskView.setText(item.get("task"));
-        completionTimeView.setText(item.get("completion_time"));
-        deadlineView.setText(item.get("deadline"));
+        taskView.setText(item.get("content"));
+        completionTimeView.setText(item.get("ddl"));
+        deadlineView.setText(item.get("creation_date"));
 
         return convertView;
     }

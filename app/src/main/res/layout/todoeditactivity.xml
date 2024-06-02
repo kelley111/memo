@@ -21,7 +21,10 @@
         android:hint="Deadline"
         android:minHeight="48dp"
         android:padding="8dp"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        />
 
     <EditText
         android:id="@+id/edit_creation_date"
@@ -30,7 +33,9 @@
         android:hint="Creation Date"
         android:minHeight="48dp"
         android:padding="8dp"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:textStyle="bold"/>
 
     <Button
         android:id="@+id/button_save"
@@ -38,5 +43,7 @@
         android:layout_height="wrap_content"
         android:text="Save"
         android:padding="16dp"
+        android:textColor="@color/black"
+        android:textStyle="bold"
         android:layout_gravity="center_horizontal" />
 </LinearLayout>

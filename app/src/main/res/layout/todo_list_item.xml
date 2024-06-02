@@ -9,20 +9,26 @@
         android:id="@+id/task_text_view"
         android:layout_width="wrap_content"
         android:layout_height="36dp"
+        android:text="task"
         android:textColor="@android:color/black"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:textStyle="bold"/>
 
     <TextView
         android:id="@+id/completion_time_text_view"
+        android:text="ddl"
         android:layout_width="wrap_content"
         android:layout_height="36dp"
         android:textSize="14sp"
-        android:textColor="@android:color/darker_gray" />
+        android:textColor="@android:color/black"
+        android:textStyle="bold"/>
 
     <TextView
         android:id="@+id/deadline_text_view"
         android:layout_width="wrap_content"
         android:layout_height="36dp"
         android:textSize="14sp"
-        android:textColor="@android:color/darker_gray" />
+        android:text="creattime"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"/>
 </LinearLayout>

@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -77,44 +78,42 @@ public class SentenceCollectionActivity extends AppCompatActivity implements Ada
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         ListView listView = findViewById(R.id.sentence_collection_read_listview);
-        HashMap<String, String> map = (HashMap<String, String>) listView.getItemAtPosition(position);
-        sentence = map.get("sentence");
-        review_text = map.get("review_text");
-        source = map.get("source");
-        date = map.get("date");
+        HashMap<String, String> item = (HashMap<String, String>) listView.getItemAtPosition(position);
+        sentence = item.get("sentence");
+        review_text = item.get("review_text");
+        source = item.get("source");
+        date = item.get("date");
 
-        // 绑定 popupwindow 中各文本框
+        // 绑定弹窗中的文本框和删除按钮
         PopupWindow popupWindow;
         View popupView = getLayoutInflater().inflate(R.layout.layout_popoutwindow, null);
-        Sentence_read = popupView.findViewById(R.id.sentence_read);
-        Source_read = popupView.findViewById(R.id.source_read);
-        Review_read = popupView.findViewById(R.id.review_read);
-        ImageButton Sentence_delete = popupView.findViewById(R.id.sentence_delete);
+        TextView sentenceTextView = popupView.findViewById(R.id.sentence_read);
+        TextView sourceTextView = popupView.findViewById(R.id.source_read);
+        TextView reviewTextView = popupView.findViewById(R.id.review_read);
+        ImageButton deleteButton = popupView.findViewById(R.id.sentence_delete);
 
-        Sentence_read.setText(sentence);
-        Source_read.setText(source);
-        Review_read.setText(review_text);
+        sentenceTextView.setText(sentence);
+        sourceTextView.setText(source);
+        reviewTextView.setText(review_text);
 
         // 展示弹窗
         popupWindow = new PopupWindow(popupView, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT, true);
         popupWindow.setTouchable(true);
         popupWindow.setOutsideTouchable(true);
-        popupWindow.setBackgroundDrawable(new BitmapDrawable(getResources(), (Bitmap) null)); // 点击空白 pop 消失
+        popupWindow.setBackgroundDrawable(new BitmapDrawable(getResources(), (Bitmap) null)); // 点击空白区域关闭弹窗
 
-        popupWindow.setWidth(WindowManager.LayoutParams.MATCH_PARENT);
-        popupWindow.setHeight(WindowManager.LayoutParams.WRAP_CONTENT);
-        popupWindow.showAtLocation(popupView, 1, 2, 3);
+        popupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
 
-        // 弹窗点击
-        Sentence_delete.setOnClickListener(new View.OnClickListener() {
+        // 弹窗中删除按钮点击事件处理
+        deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(SentenceCollectionActivity.this);
-                builder.setTitle("提示").setMessage("请确认是否删除当前数据").setPositiveButton("是", new DialogInterface.OnClickListener() {
+                builder.setTitle("确认删除").setMessage("请确认是否删除当前数据").setPositiveButton("是", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(getApplication(), "删除成功", Toast.LENGTH_SHORT).show();
-                        // 将界面中的对应 list 移除
+                        Toast.makeText(getApplicationContext(), "删除成功", Toast.LENGTH_SHORT).show();
+                        // 移除列表中对应项
                         listItems.remove(position);
                         SimpleAdapter adapter = new SimpleAdapter(SentenceCollectionActivity.this, listItems, R.layout.sentence_celection_read_list,
                                 new String[]{"sentence", "review_text", "source", "date"},

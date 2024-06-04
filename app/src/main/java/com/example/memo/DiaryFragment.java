@@ -45,48 +45,48 @@ public class DiaryFragment extends Fragment implements AdapterView.OnItemClickLi
         contentview = inflater.inflate(R.layout.diaryfragment, container, false);
 
         //从数据库中获取日记数据和日记记录的时间和日期
-        Cursor cursor = db.query("diary_data", new String[]{"diarydata", "date", "favorite_status"},
+        Cursor c = db.query("diary_data", new String[]{"diarydata", "date", "favorite_status"},
                 null, null, null, null, null); //查询data表中当前用户的日记和日期
 
         //解决第一次使用时数据为空的情况
-        if(cursor.getCount() == 0){
-            TextView suiji = contentview.findViewById(R.id.suiji);
-            suiji.setVisibility(View.VISIBLE);
+        if(c.getCount() == 0){
+            TextView dairy = contentview.findViewById(R.id.dairy);
+            dairy.setVisibility(View.VISIBLE);
             return contentview;
         } else {
-            cursor.moveToLast();//实现逆序输出，将后写入的日记先展示出来
+            c.moveToLast();//实现逆序输出，将后写入的日记先展示出来
             do {
-                @SuppressLint("Range") String diarydata = cursor.getString(cursor.getColumnIndex("diarydata"));
-                @SuppressLint("Range") String date = cursor.getString(cursor.getColumnIndex("date"));
-                @SuppressLint("Range") String status = cursor.getString(cursor.getColumnIndex("favorite_status"));
+                @SuppressLint("Range") String diarydata = c.getString(c.getColumnIndex("diarydata"));
+                @SuppressLint("Range") String date = c.getString(c.getColumnIndex("date"));
+                @SuppressLint("Range") String status = c.getString(c.getColumnIndex("favorite_status"));
 
-                String d[] = date.split("/");//分片获取日期中的各个值,数组中依次为年/月/日/时/分/秒/星期
+                String detailtime[] = date.split("/");//分片获取日期中的各个值,以获取数据为年/月/日/时/分/秒/星期
 
                 //更清晰的展示数据,使展示的数据效果更好
-                for(int i = 0; i < d.length - 1; i++){
-                    if(d[i].length() == 1){
-                        d[i] = "0" + d[i];
+                for(int i = 0; i < detailtime.length - 1; i++){
+                    if(detailtime[i].length() == 1){
+                        detailtime[i] = "0" + detailtime[i];
                     }
                 }
 
-                String time = d[3] + ":" + d[4];
-                String riqi = d[0] + "-" + d[1] + "-" + d[2];
-                String weekday = "星期" + d[6];
+                String time = detailtime[3] + ":" + detailtime[4];
+                String date3 = detailtime[0] + "-" + detailtime[1] + "-" + detailtime[2]; //日期
+                String weekday = "星期" + detailtime[6];
 
                 HashMap<String,String> map = new HashMap<String,String>();
-                map.put("daynum", d[2]);
+                map.put("daynum", detailtime[2]);
                 map.put("weekday", weekday);
                 map.put("time", time);
-                map.put("date", riqi);
+                map.put("date", date3);
                 map.put("text", diarydata);
                 map.put("status", status);
                 map.put("date1", date);//将未调整的完整日期同时存储下来，便于为以后页面查询提供日期参考
                 listItems.add(map);
 
-            } while(cursor.moveToPrevious());
+            } while(c.moveToPrevious());
 
             //生成适配器的Item和动态数组对应的元素
-            DiaryListviewAdapter adapter = new DiaryListviewAdapter(getActivity(), R.layout.list_item1, listItems);//自定义adapter添加值
+            DiaryListviewAdapter adapter = new DiaryListviewAdapter(getActivity(), R.layout.list_item1, listItems);
 
             //绑定控件
             ListView listView = contentview.findViewById(R.id.mylistview);
@@ -117,7 +117,7 @@ public class DiaryFragment extends Fragment implements AdapterView.OnItemClickLi
         SharedPreferences sp = getActivity().getSharedPreferences("data", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.putString("date", date);
-        editor.apply();//必须有这句，否则不执行
+        editor.apply();
         startActivity(Itemclick);
     }
 
@@ -148,7 +148,6 @@ public class DiaryFragment extends Fragment implements AdapterView.OnItemClickLi
             }
         }).setNegativeButton("否", null);
         builder.create().show();
-
         return true; // 长按时不会产生单击
     }
 }

@@ -14,11 +14,16 @@ public class MyPageAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        if(position==0){
+        if(position==0)
+        {
             return new DiaryFragment();
-        }else if(position==1){
+        }
+        else if(position==1)
+        {
             return new Sentencefragment();
-        }else{
+        }
+        else
+        {
             return new Todolistfragment();
         }
     }

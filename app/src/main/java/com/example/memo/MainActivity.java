@@ -34,7 +34,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity  {
-    DrawerLayout drawerLayout;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +47,7 @@ public class MainActivity extends AppCompatActivity  {
         ViewPager2 view = findViewById(R.id.viewPage2);
         MyPageAdapter pageAdapter = new MyPageAdapter(this);
         view.setAdapter(pageAdapter);
+
 
         int[] images = new int[]{
 
@@ -66,10 +68,6 @@ public class MainActivity extends AppCompatActivity  {
         //获取保存好的字段信息
 
     }
-
-
-
-
     private void applyUserSettings(Activity activity,DrawerLayout drawerLayout,float displayWidthPercentage) {
         if (activity == null || drawerLayout == null)
             return;
@@ -87,50 +85,6 @@ public class MainActivity extends AppCompatActivity  {
             e.printStackTrace();
         }
     }
-
-
-
-
-    // 该方法解决DrawerLayout只能从屏幕边缘滑动的问题,来自csdn
-    private void setDrawerLeftEdgeSize (Activity activity, DrawerLayout drawerLayout, float displayWidthPercentage) {
-        if (activity == null || drawerLayout == null) return;
-        try {
-            Field leftDraggerField = drawerLayout.getClass().getDeclaredField("mLeftDragger");//通过反射获得DrawerLayout类中mLeftDragger字段
-            leftDraggerField.setAccessible(true);//私有属性要允许修改
-            ViewDragHelper vdh = (ViewDragHelper) leftDraggerField.get(drawerLayout);//获取ViewDragHelper的实例, 通过ViewDragHelper实例获取mEdgeSize字段
-            Field edgeSizeField = vdh.getClass().getDeclaredField("mEdgeSize");//依旧是通过反射获取ViewDragHelper类中mEdgeSize字段, 这个字段控制边缘触发范围
-            edgeSizeField.setAccessible(true);//依然是私有属性要允许修改
-            int edgeSize = edgeSizeField.getInt(vdh);//这⾥获得mEdgeSize真实值
-            Log.d("AAA", "mEdgeSize: "+edgeSize);//这⾥可以打印⼀下看看值是多少
-            //Start 获取⼿机屏幕宽度，单位px
-            Point point = new Point();
-            getWindowManager().getDefaultDisplay().getRealSize(point);
-            //End 获取⼿机屏幕
-            Log.d("AAA", "point: "+point.x);//依然可以打印⼀下看看值是多少
-            edgeSizeField.setInt(vdh, 150);//这⾥设置mEdgeSize的值，Math.max函数取得是最⼤值，也可以⾃⼰指定想要触发的范围值，如: 500,注
-            //写到这⾥已经实现了，但是你会发现，如果长按触发范围，侧边栏也会弹出来，⽽且速度不太同步，稳定
-
-            //Start 解决长按会触发侧边栏
-            //长按会触发侧边栏是DrawerLayout类的私有类ViewDragCallback中的mPeekRunnable实现导致，我们通过反射把它置空
-            Field leftCallbackField = drawerLayout.getClass().getDeclaredField("mLeftCallback");//通过反射拿到私有类ViewDragCallback字段
-            leftCallbackField.setAccessible(true);//私有字段设置允许修改
-            ViewDragHelper.Callback vdhCallback = (ViewDragHelper.Callback) leftCallbackField.get(drawerLayout);//ViewDragCallback类是私有类，我们返回类型定义成他的
-            Field peekRunnableField = vdhCallback.getClass().getDeclaredField("mPeekRunnable");//我们依然是通过反射拿到关键字段，mPeekRunnable
-            peekRunnableField.setAccessible(true);
-            //定义⼀个空的实现
-            Runnable nullRunnable = new Runnable(){
-                @Override
-                public void run() {
-                }
-            };
-            peekRunnableField.set(vdhCallback, nullRunnable);//给mPeekRunnable字段置空
-
-        } catch (NoSuchFieldException e) {
-        } catch (IllegalArgumentException e) {
-        } catch (IllegalAccessException e) {
-        }
-    }
-
     //新建日记
     public void create1(View btn){
         Intent intent = new Intent(this,DiaryCreateActivity.class);

@@ -22,13 +22,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Todolistfragment extends Fragment implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
-
+    private static final int REQUEST_CODE_EDIT_TODO = 1;
     private static final String TAG = "itemclick";
     View contentview;
     DBHelper dbHelper;
     SQLiteDatabase db;
 
     ArrayList<HashMap<String, String>> listItems = new ArrayList<>();
+    ToDoListAdapter adapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,23 +37,32 @@ public class Todolistfragment extends Fragment implements AdapterView.OnItemClic
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         dbHelper = new DBHelper(getActivity());
         db = dbHelper.getReadableDatabase();
         contentview = inflater.inflate(R.layout.fragment_todolist, container, false);
 
-        // 从数据库中获取待办事项数据
-        Cursor cursor = db.query(DBHelper.TB3_NAME, new String[]{"id", "content", "ddl", "creation_date"},
+        loadData(); // 再立即重新加载数据
+
+        ListView listView = contentview.findViewById(R.id.todo_listview);
+        listView.setOnItemClickListener(this);
+        listView.setOnItemLongClickListener(this);
+
+        return contentview;
+    }
+
+    private void loadData() {
+        listItems.clear(); //清除当前数据
+        //重新从数据库中获取数据
+        Cursor cursor = db.query(DBHelper.TB3, new String[]{"id", "content", "ddl", "creation_date"},
                 null, null, null, null, null);
 
-        // 解决第一次使用时数据为空的情况
         if (cursor.getCount() == 0) {
             TextView emptyView = contentview.findViewById(R.id.empty_view);
             emptyView.setVisibility(View.VISIBLE);
-            return contentview;
+
         } else {
-            cursor.moveToLast(); // 实现逆序输出，将后写入的待办事项先展示出来
+            cursor.moveToLast();
             do {
                 @SuppressLint("Range") int id = cursor.getInt(cursor.getColumnIndex("id"));
                 @SuppressLint("Range") String content = cursor.getString(cursor.getColumnIndex("content"));
@@ -68,42 +78,38 @@ public class Todolistfragment extends Fragment implements AdapterView.OnItemClic
 
             } while (cursor.moveToPrevious());
 
-            // 生成适配器的Item和动态数组对应的元素
-            ToDoListAdapter adapter = new ToDoListAdapter(getActivity(), R.layout.todo_list_item, listItems); // 自定义adapter添加值
-
-            // 绑定控件
-            ListView listView = contentview.findViewById(R.id.todo_listview);
-            listView.setAdapter(adapter);
-            listView.setOnItemClickListener(this); // 为listView添加点击响应
-            listView.setOnItemLongClickListener(this); // 为listview长按添加响应
-
-            return contentview; // 将实现的页面返回
+            if (adapter == null) {
+                adapter = new ToDoListAdapter(getActivity(), R.layout.todo_list_item, listItems);
+                ListView listView = contentview.findViewById(R.id.todo_listview);
+                listView.setAdapter(adapter);
+            } else {
+                adapter.notifyDataSetChanged();
+            }
         }
     }
 
-    // 点击listitem后跳转到待办事项编辑页面
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         ListView listView = contentview.findViewById(R.id.todo_listview);
-        HashMap<String, String> map = (HashMap<String, String>) listView.getItemAtPosition(position); // 获得当前list展示的数据，储存在map中，通过key取值
+        HashMap<String, String> map = (HashMap<String, String>) listView.getItemAtPosition(position);
 
-        Log.i(TAG, "onItemClick: 打开新窗口");
         Intent itemClick = new Intent(getActivity(), Todoeditactivity.class);
+        itemClick.putExtra("id", map.get("id"));
+        itemClick.putExtra("content", map.get("content"));
+        itemClick.putExtra("ddl", map.get("ddl"));
+        itemClick.putExtra("creation_date", map.get("creation_date"));
 
-        String itemId = map.get("id");
-        String content = map.get("content");
-        String ddl = map.get("ddl");
-        String creationDate = map.get("creation_date");
-
-        itemClick.putExtra("id", itemId);
-        itemClick.putExtra("content", content);
-        itemClick.putExtra("ddl", ddl);
-        itemClick.putExtra("creation_date", creationDate);
-
-        startActivity(itemClick);
+        startActivityForResult(itemClick, REQUEST_CODE_EDIT_TODO);
     }
 
-    // 长按删除功能
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_EDIT_TODO && resultCode == getActivity().RESULT_OK) {
+            loadData(); // 刷新数据
+        }
+    }
+
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
         Log.i(TAG, "onItemLongClick: 长按列表项position=" + position);
@@ -119,18 +125,15 @@ public class Todolistfragment extends Fragment implements AdapterView.OnItemClic
             public void onClick(DialogInterface dialog, int which) {
                 Log.i(TAG, "onClick: 对话框事件处理");
 
-                // 删除数据库记录
-                db.delete(DBHelper.TB3_NAME, "id=?", new String[]{itemId});
-                // 从列表中移除该项
+                db.delete(DBHelper.TB3, "id=?", new String[]{itemId});
                 listItems.remove(position);
-                // 更新适配器
-                ((ToDoListAdapter) listView.getAdapter()).notifyDataSetChanged();
+                adapter.notifyDataSetChanged();
 
                 Toast.makeText(getActivity(), "删除成功", Toast.LENGTH_SHORT).show();
             }
         }).setNegativeButton("否", null);
         builder.create().show();
 
-        return true; // 长按时不会产生单击
+        return true;
     }
 }

@@ -17,7 +17,7 @@
             android:layout_height="567dp"
             android:divider="@null"
             android:dividerHeight="5dp"
-            app:layout_constraintBottom_toTopOf="@+id/suiji"
+            app:layout_constraintBottom_toTopOf="@+id/dairy"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.489"
             app:layout_constraintStart_toStartOf="parent"
@@ -59,7 +59,7 @@
             app:layout_constraintVertical_bias="0.947" />
 
         <TextView
-            android:id="@+id/suiji"
+            android:id="@+id/dairy"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"

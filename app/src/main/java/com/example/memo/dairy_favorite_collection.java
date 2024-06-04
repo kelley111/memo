@@ -68,14 +68,14 @@ public class dairy_favorite_collection extends AppCompatActivity implements Adap
                 }
 
                 String time = d[3] + ":" + d[4];
-                String riqi = d[0] + "-" + d[1] + "-" + d[2];
+                String date3 = d[0] + "-" + d[1] + "-" + d[2];
                 String weekday = "星期" + d[6];
 
                 HashMap<String, String> map = new HashMap<>();
                 map.put("daynum", d[2]);
                 map.put("weekday", weekday);
                 map.put("time", time);
-                map.put("date", riqi);
+                map.put("date", date3);
                 map.put("text", diarydata);
                 map.put("status", status);
                 map.put("date1", date);

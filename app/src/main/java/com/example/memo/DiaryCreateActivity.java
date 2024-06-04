@@ -70,6 +70,7 @@ public class DiaryCreateActivity extends AppCompatActivity {
             db.insert("diary_data", null, values);
 
             Intent intent = new Intent(this, MainActivity.class);
+            //确保如果目标 Activity 已经在任务栈的顶部，那么不会创建新的实例
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
             finish();

@@ -50,7 +50,7 @@ public class TodoList extends AppCompatActivity {
             values.put("content", content);
             values.put("ddl", ddl);
             values.put("creation_date", creationDate);
-            db.insert(DBHelper.TB3_NAME, null, values);
+            db.insert(DBHelper.TB3, null, values);
 
             Intent intent = new Intent(this, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

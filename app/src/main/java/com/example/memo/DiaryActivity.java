@@ -38,10 +38,10 @@ public class DiaryActivity extends AppCompatActivity {
         date = intent.getStringExtra("date");
 
         // 日期字符串示例: "2024/05/28/星期二/12:34"
-        String[] d = date.split("/");
-        String yearStr = d[0] + "年";
-        String dayStr = d[1] + "月" + d[2] + "日";
-        String timeStr = d[3] + " " + d[4];
+        String[] detailtime = date.split("/");
+        String yearStr = detailtime[0] + "年";
+        String dayStr = detailtime[1] + "月" + detailtime[2] + "日";
+        String timeStr = detailtime[3] + " " + detailtime[4];
 
         read = findViewById(R.id.read);
         year = findViewById(R.id.year);
@@ -49,23 +49,23 @@ public class DiaryActivity extends AppCompatActivity {
         time = findViewById(R.id.time);
 
         read.setText(diarydata);
-        read.setMovementMethod(ScrollingMovementMethod.getInstance()); // 使得文本框中文字过多时可滑动
 
         year.setText(yearStr);
         day.setText(dayStr);
         time.setText(timeStr);
 
+        read.setMovementMethod(ScrollingMovementMethod.getInstance()); // 使得文本框中文字过多时可滑动
+
         dbHelper = new DBHelper(this);
         db = dbHelper.getWritableDatabase();
-        Cursor cursor = db.query("diary_data", new String[]{"favorite_status"}, "date=?", new String[]{date},
+        Cursor c = db.query("diary_data", new String[]{"favorite_status"}, "date=?", new String[]{date},
                 null, null, null);
-        while (cursor.moveToNext()) {
-            status = cursor.getString(cursor.getColumnIndexOrThrow("favorite_status")); // 收藏状态
+        while (c.moveToNext()) {
+            status = c.getString(c.getColumnIndexOrThrow("favorite_status")); // 收藏状态
         }
     }
-
+    // 打开日记修改页面并传值
     public void change(View btn) {
-        // 打开日记修改页面并传值
         Intent intent = new Intent(this, DiaryWriteActivity.class);
         intent.putExtra("diarydata", diarydata);
         startActivity(intent);
@@ -79,23 +79,23 @@ public class DiaryActivity extends AppCompatActivity {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     db.delete("diary_data", "date=?", new String[]{date}); // 数据库记录删除
-                    Toast.makeText(getApplication(), "删除成功", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplication(), "已成功删除", Toast.LENGTH_SHORT).show();
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                     finish();
-                    Toast.makeText(DiaryActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DiaryActivity.this, "已成功删除", Toast.LENGTH_SHORT).show();
                 }
-            }).setNegativeButton("否", null);
+            }).setNegativeButton("不！！手滑手滑~", null);
             builder.create().show();
         }
-
+  //将日记进行收藏
     public void share(View btn) {
         if (status.equals("已收藏")) {
-            Toast.makeText(this, "已经收藏过了哦", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "已在收藏夹里啦!有空可以去回味！！", Toast.LENGTH_SHORT).show();
         } else {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("提示").setMessage("要将这条随记收藏吗").setPositiveButton("是", new DialogInterface.OnClickListener() {
-
+                       //收藏的具体操作
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dbHelper = new DBHelper(getApplicationContext());

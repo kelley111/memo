@@ -46,7 +46,6 @@ public class Sentencefragment extends Fragment implements Runnable {
     RadioGroup radioGroup;
     String web = "https://v1.hitokoto.cn?c=i"; // 初始网址
     Handler handler;
-    String v[] ; // 用来保存从接口上获得的内容，以便回传主线程
 
     DBHelper dbHelper;
     SQLiteDatabase db;
@@ -120,7 +119,7 @@ public class Sentencefragment extends Fragment implements Runnable {
             String review_text = Review_text.getText().toString();
             // 编辑框为空则提示
             if (review_text.isEmpty()) {
-                Toast.makeText(getActivity(), "写点什么再保存吧!o(*￣▽￣*)ブ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "写点什么再保存吧!", Toast.LENGTH_SHORT).show();
             } else {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle("tips").setMessage("总有一些语句会产生共鸣，确定留下吗").setPositiveButton("sure", (dialog, which) -> {
@@ -144,7 +143,7 @@ public class Sentencefragment extends Fragment implements Runnable {
 
                     db.insert("sentence_data", null, contentValues);
                     // 已经收藏起来了,有时间就去回味一下吧,收藏成功的提示
-                    Toast.makeText(getActivity(), "已经收藏起来了,有时间就去回味一下吧", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "已成功收藏", Toast.LENGTH_SHORT).show();
                     Review_text.setText(null);
                 }).setNegativeButton("否", null);
                 builder.create().show();
@@ -164,10 +163,10 @@ public class Sentencefragment extends Fragment implements Runnable {
                 if (msg.what == 7) {
                     String[] str = (String[]) msg.obj;
                     Log.i(TAG, "handleMessage: getMessage msg = " + str);
-                    String jz = str[0]; // 取出句子
-                    String ly = str[1]; // 取出出处
-                    textView1.setText(jz);
-                    textView2.setText(ly);
+                    String sentence = str[0]; // 取出句子
+                    String origin = str[1]; // 取出出处
+                    textView1.setText(sentence);
+                    textView2.setText(origin);
                 }
                 super.handleMessage(msg);
             }

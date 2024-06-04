@@ -9,10 +9,10 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private static final int VERSION =6 ;
     private static final String DB_NAME = "my.db";
-    public static final String TB1_NAME = "diary_data";
-    public static final String TB2_NAME = "sentence_data";
-    public static final String TB3_NAME = "todo_list";
-    public static final String TB4_NAME = "diary_favorite_data";
+    public static final String TB1 = "diary_data";
+    public static final String TB2 = "sentence_data";
+    public static final String TB3 = "todo_list";
+    public static final String TB4 = "diary_favorite_data";
 
     public DBHelper(Context context) {
         super(context, DB_NAME, null, VERSION);
@@ -20,18 +20,18 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        Log.i("DBHelper", "onCreate: Creating database tables");
+        Log.i("DBHelper", "onCreate: Creating SQL");
 
         db.execSQL("PRAGMA foreign_keys=ON;");
 
-        db.execSQL("CREATE TABLE " + TB1_NAME + " ("
+        db.execSQL("CREATE TABLE " + TB1 + " ("
                 + "diarydata TEXT, "
                 + "date DATE, "
                 + "favorite_status TEXT, "
                 + "favorite_time TEXT"
                 + ")");
 
-        db.execSQL("CREATE TABLE " + TB2_NAME + " ("
+        db.execSQL("CREATE TABLE " + TB2 + " ("
                 + "sentence TEXT, "
                 + "source TEXT, "
                 + "review_text TEXT, "
@@ -39,14 +39,14 @@ public class DBHelper extends SQLiteOpenHelper {
                 + "favorite_status TEXT"
                 + ")");
 
-        db.execSQL("CREATE TABLE " + TB3_NAME + " ("
+        db.execSQL("CREATE TABLE " + TB3 + " ("
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + "content TEXT, "
                 + "ddl TEXT, "
                 + "creation_date TEXT"
                 + ")");
 
-        db.execSQL("CREATE TABLE " + TB4_NAME + " ("
+        db.execSQL("CREATE TABLE " + TB4 + " ("
                 + "diarydata TEXT, "
                 + "date DATE, "
                 + "favorite_status TEXT, "
@@ -60,13 +60,13 @@ public class DBHelper extends SQLiteOpenHelper {
 
         if (oldVersion < 2) {
             Log.i("DBHelper", "onUpgrade: Adding columns to diary_data and sentence_data tables");
-            db.execSQL("ALTER TABLE " + TB1_NAME + " ADD COLUMN favorite_status TEXT");
-            db.execSQL("ALTER TABLE " + TB1_NAME + " ADD COLUMN favorite_time TEXT");
-            db.execSQL("ALTER TABLE " + TB2_NAME + " ADD COLUMN favorite_status TEXT");
+            db.execSQL("ALTER TABLE " + TB1 + " ADD COLUMN favorite_status TEXT");
+            db.execSQL("ALTER TABLE " + TB1 + " ADD COLUMN favorite_time TEXT");
+            db.execSQL("ALTER TABLE " + TB2 + " ADD COLUMN favorite_status TEXT");
         }
         if (oldVersion < 6) {
             Log.i("DBHelper", "onUpgrade: Creating todo_list table");
-            db.execSQL("CREATE TABLE " + TB3_NAME + " ("
+            db.execSQL("CREATE TABLE " + TB3 + " ("
                     + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
                     + "content TEXT, "
                     + "ddl TEXT, "
@@ -75,7 +75,7 @@ public class DBHelper extends SQLiteOpenHelper {
         }
         if (oldVersion < 6) {
             Log.i("DBHelper", "onUpgrade: Creating diary_favorite_data table");
-            db.execSQL("CREATE TABLE " + TB4_NAME + " ("
+            db.execSQL("CREATE TABLE " + TB4 + " ("
                     + "diarydata TEXT, "
                     + "date DATE, "
                     + "favorite_status TEXT, "

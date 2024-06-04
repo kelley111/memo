@@ -31,7 +31,6 @@ public class DiaryListviewAdapter extends ArrayAdapter {
         TextView date = itemView.findViewById(R.id.date);
         TextView time = itemView.findViewById(R.id.time);
         TextView text = itemView.findViewById(R.id.text);
-
         date.setText(map.get("date"));
         time.setText(map.get("time"));
         text.setText(map.get("text"));

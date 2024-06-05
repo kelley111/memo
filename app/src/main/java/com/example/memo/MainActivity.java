@@ -43,7 +43,6 @@ public class MainActivity extends AppCompatActivity  {
         MyPageAdapter pageAdapter = new MyPageAdapter(this);
         view.setAdapter(pageAdapter);
 
-
         int[] images = new int[]{
 
                 android.R.drawable.presence_audio_away,

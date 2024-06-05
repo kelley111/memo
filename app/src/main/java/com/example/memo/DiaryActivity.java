@@ -54,7 +54,9 @@ public class DiaryActivity extends AppCompatActivity {
         day.setText(dayStr);
         time.setText(timeStr);
 
-        read.setMovementMethod(ScrollingMovementMethod.getInstance()); // 使得文本框中文字过多时可滑动
+
+        // 使得文本框中文字过多时可滑动
+        read.setMovementMethod(ScrollingMovementMethod.getInstance());
 
         dbHelper = new DBHelper(this);
         db = dbHelper.getWritableDatabase();
@@ -64,7 +66,7 @@ public class DiaryActivity extends AppCompatActivity {
             status = c.getString(c.getColumnIndexOrThrow("favorite_status")); // 收藏状态
         }
     }
-    // 打开日记修改页面并传值
+    // 打开日记修改页面并传值.0
     public void change(View btn) {
         Intent intent = new Intent(this, DiaryWriteActivity.class);
         intent.putExtra("diarydata", diarydata);

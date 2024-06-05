@@ -21,63 +21,66 @@ public class DiaryCreateActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_diary_create);
-        dbHelper = new DBHelper(this);
-        db=dbHelper.getWritableDatabase();
 
+        // 实例化 DBHelper 并获取可写数据库
+        dbHelper = new DBHelper(this);
+        db = dbHelper.getWritableDatabase();
     }
 
+    // 当用户点击保存按钮时调用的方法
     public void create(View btn){
-
-        //若内容为空则提示，否则保存
+        // 获取用户输入的日记内容
         EditText editText = findViewById(R.id.content);
         String text = editText.getText().toString();
+
+        // 如果内容为空，则显示警告对话框，否则保存日记
         if(text.isEmpty()){
-            //用弹窗表示当前内容为空不能保存
+            // 显示警告对话框
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("tips").setMessage("请输入内容后再进行保存，无法保存空内容").setNegativeButton("ok",null);
+            builder.setTitle("提示").setMessage("请输入内容后再进行保存，无法保存空内容").setNegativeButton("确定",null);
             builder.create().show();
         }
         else {
-            Calendar calendar = Calendar.getInstance();
-            //获取系统的日期
-            int weekday = calendar.get(Calendar.DAY_OF_WEEK) - 1;
-            String weekdayC = new String();//将获取的数字星期数改为汉字
-            //Toast.makeText(this, weekday, Toast.LENGTH_SHORT).show();
-            if (weekday == 1) weekdayC = "一";
-            else if (weekday == 2) weekdayC = "二";
-            else if (weekday == 3) weekdayC = "三";
-            else if (weekday == 4) weekdayC = "四";
-            else if (weekday == 5) weekdayC = "五";
-            else if (weekday == 6) weekdayC = "六";
-            else if (weekday == 0) weekdayC = "日";
-            int year = calendar.get(Calendar.YEAR);//年
-            int month = calendar.get(Calendar.MONTH) + 1;//月
-            int day = calendar.get(Calendar.DAY_OF_MONTH);//日
-            int hour = calendar.get(Calendar.HOUR_OF_DAY);//小时
-            int minute = calendar.get(Calendar.MINUTE);//分钟
-            int second = calendar.get(Calendar.SECOND);//秒
-            String date = year + "/" + month + "/" + day + "/" + hour + "/" + minute + "/" + second + "/" + weekdayC;//组合成完整时间日期
-             Toast.makeText(this, date, Toast.LENGTH_SHORT).show();
+            // 获取当前时间
+            Calendar cal = Calendar.getInstance();
+            int weekday = cal.get(Calendar.DAY_OF_WEEK) - 1; // 获取星期几
+            String datatime = new String(); // 星期几的汉字表示
+            if (weekday == 1) datatime = "一";
+            else if (weekday == 2) datatime = "二";
+            else if (weekday == 3) datatime = "三";
+            else if (weekday == 4) datatime = "四";
+            else if (weekday == 5) datatime = "五";
+            else if (weekday == 6) datatime = "六";
+            else if (weekday == 0) datatime = "日";
+            int year = cal.get(Calendar.YEAR);// 年
+            int month = cal.get(Calendar.MONTH) + 1;// 月
+            int day = cal.get(Calendar.DAY_OF_MONTH);// 日
+            int hour = cal.get(Calendar.HOUR_OF_DAY);// 小时
+            int minute = cal.get(Calendar.MINUTE);// 分钟
+            int second = cal.get(Calendar.SECOND);// 秒
+            String date = year + "/" + month + "/" + day + "/" + hour + "/" + minute + "/" + second + "/" + datatime;// 组合成完整时间日期
+            // 显示日期时间
+            Toast.makeText(this, date, Toast.LENGTH_SHORT).show();
 
-            //向数据库写入数据
+            // 向数据库写入数据
             ContentValues values = new ContentValues();
-            values.put("diarydata", text);
-            values.put("date", date);
-            values.put("favorite_status","未收藏");
-            db.insert("diary_data", null, values);
+            values.put("diarydata", text); // 日记内容
+            values.put("date", date); // 日期时间
+            values.put("favorite_status","未收藏"); // 收藏状态，默认为未收藏
+            db.insert("diary_data", null, values); // 插入数据
 
+            // 返回到主界面
             Intent intent = new Intent(this, MainActivity.class);
-            //确保如果目标 Activity 已经在任务栈的顶部，那么不会创建新的实例
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // 确保如果目标 Activity 已经在任务栈的顶部，那么不会创建新的实例
             startActivity(intent);
-            finish();
+            finish(); // 关闭当前页面
         }
     }
-    //关闭页面
+
+    // 当用户点击取消按钮时调用的方法
     public void cancel(View btn){
-        finish();
+        finish(); // 关闭当前页面
     }
 }

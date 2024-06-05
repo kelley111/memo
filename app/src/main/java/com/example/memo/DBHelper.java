@@ -56,7 +56,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        Log.i("DBHelper", "onUpgrade: Upgrading database from version " + oldVersion + " to " + newVersion);
 
         if (oldVersion < 2) {
             Log.i("DBHelper", "onUpgrade: Adding columns to diary_data and sentence_data tables");

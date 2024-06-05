@@ -80,7 +80,7 @@ public class DiaryFragment extends Fragment implements AdapterView.OnItemClickLi
                 map.put("date", date3);
                 map.put("text", diarydata);
                 map.put("status", status);
-                map.put("date1", date);//将未调整的完整日期同时存储下来，便于为以后页面查询提供日期参考
+                map.put("date1", date);
                 listItems.add(map);
 
             } while(c.moveToPrevious());

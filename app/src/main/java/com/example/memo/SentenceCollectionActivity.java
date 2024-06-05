@@ -28,7 +28,6 @@ public class SentenceCollectionActivity extends AppCompatActivity implements Ada
     DBHelper dbHelper;
     SQLiteDatabase db;
     String sentence, review_text, source, date;
-    TextView Sentence_read, Source_read, Review_read;
     ArrayList<HashMap<String, String>> listItems = new ArrayList<>();
 
     @Override

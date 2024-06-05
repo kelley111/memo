@@ -1,6 +1,4 @@
 package com.example.memo;
-
-
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.customview.widget.ViewDragHelper;
@@ -34,16 +32,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity  {
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.page1);
         //设置屏幕滑动问题
-        applyUserSettings(this, drawerLayout, 1f);
+        adjustDrawerEdgeSize(this, drawerLayout, 1f);
         ViewPager2 view = findViewById(R.id.viewPage2);
         MyPageAdapter pageAdapter = new MyPageAdapter(this);
         view.setAdapter(pageAdapter);
@@ -68,20 +63,28 @@ public class MainActivity extends AppCompatActivity  {
         //获取保存好的字段信息
 
     }
-    private void applyUserSettings(Activity activity,DrawerLayout drawerLayout,float displayWidthPercentage) {
+    private void adjustDrawerEdgeSize(Activity activity, DrawerLayout drawerLayout, float displayWidthPercentage) {
         if (activity == null || drawerLayout == null)
             return;
-
         try {
+            // 获取DrawerLayout的左边缘拖动处理器
             Field leftDraggerField = drawerLayout.getClass().getDeclaredField("mLeftDragger");
             leftDraggerField.setAccessible(true);
-            ViewDragHelper leftDragger = (ViewDragHelper) leftDraggerField.get(drawerLayout);
+            Object leftDraggerObj = leftDraggerField.get(drawerLayout);
 
-            Field edgeSizeField = leftDragger.getClass().getDeclaredField("mEdgeSize");
+            // 获取左边缘拖动处理器的类对象
+            Class<?> leftDraggerClass = leftDraggerObj.getClass();
+
+            // 获取边缘大小字段，并设置其访问权限为可访问
+            Field edgeSizeField = leftDraggerClass.getDeclaredField("mEdgeSize");
             edgeSizeField.setAccessible(true);
+
+            // 计算边缘大小
             int edgeSize = (int) (displayWidthPercentage * Resources.getSystem().getDisplayMetrics().widthPixels);
-            edgeSizeField.setInt(leftDragger, edgeSize);
-        } catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException e) {
+
+            // 设置边缘大小
+            edgeSizeField.setInt(leftDraggerObj, edgeSize);
+        } catch (NoSuchFieldException | IllegalAccessException | IllegalArgumentException e) {
             e.printStackTrace();
         }
     }

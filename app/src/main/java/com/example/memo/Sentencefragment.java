@@ -95,22 +95,23 @@ public class Sentencefragment extends Fragment implements Runnable {
 
                 // TODO Auto-generated method stub
                 int lines = Review_text.getLineCount();
-                // 限制最大输入行数
-                if (lines > 2) {
-                    String str = s.toString();
-                    int cursorStart = Review_text.getSelectionStart();
-                    int cursorEnd = Review_text.getSelectionEnd();
-                    if (cursorStart == cursorEnd && cursorStart < str.length() && cursorStart >= 1) {
-                        str = str.substring(0, cursorStart - 1) + str.substring(cursorStart);
+                // 限制最大输入行数为3行
+                if (lines > 3) {
+                    String string = s.toString();
+                    int Start = Review_text.getSelectionStart();
+                    int End = Review_text.getSelectionEnd();
+                    if (Start == End && Start < string.length() && Start >= 1) {
+                        string = string.substring(0, Start - 1) + string.substring(Start);
                     } else {
-                        str = str.substring(0, s.length() - 1);
+                        string = string.substring(0, s.length() - 1);
                     }
-                    // setText会触发afterTextChanged的递归
-                    Review_text.setText(str);
-                    // setSelection用的索引不能使用str.length()否则会越界
+                    // setText触发递归
+                    Review_text.setText(string);
+                     //防止越界
                     Review_text.setSelection(Review_text.getText().length());
-                    Toast.makeText(getActivity(), "输入内容请不要超过两行，我装不下呜呜呜呜", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "输入内容请不要超过三行，我装不下呜呜呜呜", Toast.LENGTH_SHORT).show();
                 }
+
             }
         }); // 设置页面2文本框的最大输入行数
 

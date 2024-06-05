@@ -16,7 +16,6 @@ public class DiaryWriteActivity extends AppCompatActivity {
     SQLiteDatabase db;
     EditText editText;
     String diarydata;
-    String text;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -39,10 +39,10 @@ import java.util.Locale;
 public class Sentencefragment extends Fragment implements Runnable {
 
     private static final String TAG = "fragment2";
-    View contentview;
+    View contentView;
     TextView textView1, textView2;
-    EditText Review_text;
-    ImageButton review_button, list, next;
+    EditText reviewText;
+    ImageButton reviewButton, list, next;
     RadioGroup radioGroup;
     String web = "https://v1.hitokoto.cn?c=i"; // 初始网址
     Handler handler;
@@ -61,6 +61,7 @@ public class Sentencefragment extends Fragment implements Runnable {
         }
         return stringBuilder.toString();
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,16 +70,16 @@ public class Sentencefragment extends Fragment implements Runnable {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        contentview = inflater.inflate(R.layout.sentencefragment, container, false);
-        radioGroup = contentview.findViewById(R.id.rdg);
-        textView1 = contentview.findViewById(R.id.jd);
-        textView2 = contentview.findViewById(R.id.ly);
-        Review_text = contentview.findViewById(R.id.review_text);
-        review_button = contentview.findViewById(R.id.review_button);
-        list = contentview.findViewById(R.id.list);
+        contentView = inflater.inflate(R.layout.sentencefragment, container, false);
+        radioGroup = contentView.findViewById(R.id.rdg);
+        textView1 = contentView.findViewById(R.id.jd);
+        textView2 = contentView.findViewById(R.id.ly);
+        reviewText = contentView.findViewById(R.id.review_text);
+        reviewButton = contentView.findViewById(R.id.review_button);
+        list = contentView.findViewById(R.id.list);
 
         // 添加一个监听
-        Review_text.addTextChangedListener(new TextWatcher() {
+        reviewText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 // 文本内容发送改变之前使用
@@ -94,21 +95,21 @@ public class Sentencefragment extends Fragment implements Runnable {
                 // 发生后
 
                 // TODO Auto-generated method stub
-                int lines = Review_text.getLineCount();
+                int lines = reviewText.getLineCount();
                 // 限制最大输入行数为3行
                 if (lines > 3) {
                     String string = s.toString();
-                    int Start = Review_text.getSelectionStart();
-                    int End = Review_text.getSelectionEnd();
-                    if (Start == End && Start < string.length() && Start >= 1) {
-                        string = string.substring(0, Start - 1) + string.substring(Start);
+                    int start = reviewText.getSelectionStart();
+                    int end = reviewText.getSelectionEnd();
+                    if (start == end && start < string.length() && start >= 1) {
+                        string = string.substring(0, start - 1) + string.substring(start);
                     } else {
                         string = string.substring(0, s.length() - 1);
                     }
                     // setText触发递归
-                    Review_text.setText(string);
-                     //防止越界
-                    Review_text.setSelection(Review_text.getText().length());
+                    reviewText.setText(string);
+                    //防止越界
+                    reviewText.setSelection(reviewText.getText().length());
                     Toast.makeText(getActivity(), "输入内容请不要超过三行，我装不下呜呜呜呜", Toast.LENGTH_SHORT).show();
                 }
 
@@ -116,38 +117,13 @@ public class Sentencefragment extends Fragment implements Runnable {
         }); // 设置页面2文本框的最大输入行数
 
         // 三个按钮的事件处理
-        review_button.setOnClickListener(v -> {
-            String review_text = Review_text.getText().toString();
+        reviewButton.setOnClickListener(v -> {
+            String reviewTextStr = reviewText.getText().toString();
             // 编辑框为空则提示
-            if (review_text.isEmpty()) {
+            if (reviewTextStr.isEmpty()) {
                 Toast.makeText(getActivity(), "写点什么再保存吧!", Toast.LENGTH_SHORT).show();
             } else {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setTitle("tips").setMessage("总有一些语句会产生共鸣，确定留下吗").setPositiveButton("sure", (dialog, which) -> {
-                    // 保存编辑框中的内容并存入数据库
-                    dbHelper = new DBHelper(getActivity());
-                    db = dbHelper.getWritableDatabase();
-
-                    String content = textView1.getText().toString(); // 获得句子
-                    String source = textView2.getText().toString(); // 获得出处
-
-                    // 获取当前时间并格式化
-                    Calendar calendar = Calendar.getInstance();
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-                    String datetime = sdf.format(calendar.getTime());
-
-                    ContentValues contentValues = new ContentValues();
-                    contentValues.put("sentence", content);
-                    contentValues.put("source", source);
-                    contentValues.put("date", datetime);
-                    contentValues.put("review_text", review_text);
-
-                    db.insert("sentence_data", null, contentValues);
-                    // 已经收藏起来了,有时间就去回味一下吧,收藏成功的提示
-                    Toast.makeText(getActivity(), "已成功收藏", Toast.LENGTH_SHORT).show();
-                    Review_text.setText(null);
-                }).setNegativeButton("否", null);
-                builder.create().show();
+                showConfirmationDialog(reviewTextStr);
             }
         });
 
@@ -178,36 +154,12 @@ public class Sentencefragment extends Fragment implements Runnable {
         t1.start();
 
         radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
-            if (checkedId == R.id.cartoon) {
-                web = "https://v1.hitokoto.cn?c=a";
-
-            } else if (checkedId == R.id.self) {
-                web = "https://v1.hitokoto.cn?c=e";
-
-            } else if (checkedId == R.id.literature) {
-                web = "https://v1.hitokoto.cn?c=d";
-
-            } else if (checkedId == R.id.poetry) {
-                web = "https://v1.hitokoto.cn?c=i";
-
-            } else if (checkedId == R.id.philosophy) {
-                web = "https://v1.hitokoto.cn?c=k";
-
-            } else if (checkedId == R.id.films) {
-                web = "https://v1.hitokoto.cn?c=h";
-
-            } else if (checkedId == R.id.wyy) {
-                web = "https://v1.hitokoto.cn?c=j";
-
-            } else if (checkedId == R.id.random) {
-                web = "https://v1.hitokoto.cn?c=a&c=b&c=c&c=d&c=e&c=f&c=g&c=h&c=i&c=j&c=k&c=l";
-
-            }
+            updateWebUrl(checkedId);
             Thread t = new Thread(Sentencefragment.this::run);
             t.start();
         });
 
-        return contentview;
+        return contentView;
     }
 
     // 子线程获取接口数据
@@ -215,8 +167,8 @@ public class Sentencefragment extends Fragment implements Runnable {
     public void run() {
         Log.i("run", "run: run()......");
 
-        String value1 = ""; // 用于存储句子内容字段
-        String value2 = ""; // 用于存储句子的来源字段
+        String sentenceContent = ""; // 用于存储句子内容字段
+        String source = ""; // 用于存储句子的来源字段
 
         try {
             URL url = new URL(web);
@@ -224,17 +176,17 @@ public class Sentencefragment extends Fragment implements Runnable {
             connection.setRequestMethod("GET");
             connection.connect();
 
-            int responsecode = connection.getResponseCode();
-            Log.i("response", "response: " + responsecode);
+            int responseCode = connection.getResponseCode();
+            Log.i("response", "response: " + responseCode);
 
-            if (responsecode == HttpURLConnection.HTTP_OK) {
+            if (responseCode == HttpURLConnection.HTTP_OK) {
                 InputStream in = connection.getInputStream();
                 String content = convertInputStreamToString(in);
                 Log.i(TAG, "run: content: " + content);
                 JSONObject jsonObject = new JSONObject(content);
-                value1 = jsonObject.optString("hitokoto"); // 取出正文即句子
-                value2 = jsonObject.optString("from"); // 取出出处
-                Log.i("value", "value: " + value1 + " - " + value2);
+                sentenceContent = jsonObject.optString("hitokoto"); // 取出正文即句子
+                source = jsonObject.optString("from"); // 取出出处
+                Log.i("value", "value: " + sentenceContent + " - " + source);
             } else {
                 Log.e(TAG, "run: Response code is not OK");
             }
@@ -244,11 +196,64 @@ public class Sentencefragment extends Fragment implements Runnable {
         }
 
         // 获取Msg对象，用于返回主线程
-        Message msg = handler.obtainMessage(7, new String[]{value1, value2});
+        Message msg = handler.obtainMessage(7, new String[]{sentenceContent, source});
         handler.sendMessage(msg);
         Log.i(TAG, "run: sendMessage ok");
     }
 
+    // 显示确认对话框
+    private void showConfirmationDialog(String reviewTextStr) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("tips").setMessage("总有一些语句会产生共鸣，确定留下吗").setPositiveButton("sure", (dialog, which) -> {
+            saveToDatabase(reviewTextStr);
+        }).setNegativeButton("否", null);
+        builder.create().show();
+    }
 
+    // 保存数据到数据库
+    private void saveToDatabase(String reviewTextStr) {
+        dbHelper = new DBHelper(getActivity());
+        db = dbHelper.getWritableDatabase();
+
+        String content = textView1.getText().toString(); // 获得句子
+        String source = textView2.getText().toString(); // 获得出处
+
+        // 获取当前时间并格式化
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        String datetime = sdf.format(calendar.getTime());
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("sentence", content);
+        contentValues.put("source", source);
+        contentValues.put("date", datetime);
+        contentValues.put("review_text", reviewTextStr);
+
+        db.insert("sentence_data", null, contentValues);
+        // 收藏成功的提示
+        Toast.makeText(getActivity(), "已成功收藏", Toast.LENGTH_SHORT).show();
+        reviewText.setText(null);
+    }
+
+    // 更新网址
+    private void updateWebUrl(int checkedId) {
+        if (checkedId == R.id.cartoon) {
+            web = "https://v1.hitokoto.cn?c=a";
+        } else if (checkedId == R.id.self) {
+            web = "https://v1.hitokoto.cn?c=e";
+        } else if (checkedId == R.id.literature) {
+            web = "https://v1.hitokoto.cn?c=d";
+        } else if (checkedId == R.id.poetry) {
+            web = "https://v1.hitokoto.cn?c=i";
+        } else if (checkedId == R.id.philosophy) {
+            web = "https://v1.hitokoto.cn?c=k";
+        } else if (checkedId == R.id.films) {
+            web = "https://v1.hitokoto.cn?c=h";
+        } else if (checkedId == R.id.wyy) {
+            web = "https://v1.hitokoto.cn?c=j";
+        } else if (checkedId == R.id.random) {
+            web = "https://v1.hitokoto.cn?c=a&c=b&c=c&c=d&c=e&c=f&c=g&c=h&c=i&c=j&c=k&c=l";
+        }
+    }
 
 }

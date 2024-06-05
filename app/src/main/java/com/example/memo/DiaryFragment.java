@@ -97,7 +97,7 @@ public class DiaryFragment extends Fragment implements AdapterView.OnItemClickLi
             return contentview;//将实现的页面返回
         }
     }
-
+    //okfine
     //点击listitem后跳转到日记阅读页面
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
